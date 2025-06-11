@@ -1,5 +1,4 @@
-import React from 'react';
-import { ExternalLink, BookOpen, FileText, Users } from 'lucide-react';
+import { ExternalLink, BookOpen, FileText, Users } from "lucide-react";
 
 const SourcesSection = () => {
   const sources = {
@@ -9,29 +8,30 @@ const SourcesSection = () => {
       items: [
         {
           name: "Agence Spatiale Européenne (ESA)",
-          description: "Rapports officiels sur la politique spatiale européenne",
+          description:
+            "Rapports officiels sur la politique spatiale européenne",
           url: "https://www.esa.int",
-          type: "Institution"
+          type: "Institution",
         },
         {
           name: "Centre National d'Études Spatiales (CNES)",
           description: "Données et analyses sur l'industrie spatiale française",
           url: "https://cnes.fr",
-          type: "Agence nationale"
+          type: "Agence nationale",
         },
         {
           name: "UN Office for Outer Space Affairs",
           description: "Cadre juridique international pour l'espace",
           url: "https://www.unoosa.org",
-          type: "Organisation internationale"
+          type: "Organisation internationale",
         },
         {
           name: "OCDE - Économie Spatiale",
           description: "Analyses économiques et statistiques sectorielles",
           url: "https://www.oecd.org/space",
-          type: "Organisation économique"
-        }
-      ]
+          type: "Organisation économique",
+        },
+      ],
     },
     research: {
       title: "Recherche et Think Tanks",
@@ -41,27 +41,27 @@ const SourcesSection = () => {
           name: "Secure World Foundation",
           description: "Analyses sur la sécurité spatiale et les débris",
           url: "https://swfound.org",
-          type: "Think tank"
+          type: "Think tank",
         },
         {
           name: "Centre Spatial Universitaire de Montpellier",
           description: "Recherches académiques françaises sur l'espace",
           url: "https://www.csum.fr",
-          type: "Université"
+          type: "Université",
         },
         {
           name: "European Space Policy Institute (ESPI)",
           description: "Analyses politiques spatiales européennes",
           url: "https://www.espi.or.at",
-          type: "Institut de recherche"
+          type: "Institut de recherche",
         },
         {
           name: "International Astronautical Union (IAU)",
           description: "Recherches sur la pollution lumineuse spatiale",
           url: "https://www.iau.org",
-          type: "Union scientifique"
-        }
-      ]
+          type: "Union scientifique",
+        },
+      ],
     },
     reports: {
       title: "Rapports et Études",
@@ -70,25 +70,25 @@ const SourcesSection = () => {
         {
           name: "Space Foundation - Space Report 2023",
           description: "Analyse complète de l'économie spatiale mondiale",
-          type: "Rapport annuel"
+          type: "Rapport annuel",
         },
         {
           name: "ESA Space Debris Quarterly Report",
           description: "Suivi trimestriel de l'évolution des débris spatiaux",
-          type: "Rapport technique"
+          type: "Rapport technique",
         },
         {
           name: "Nature - Satellite Constellations Impact",
           description: "Étude scientifique sur l'impact environnemental",
-          type: "Publication scientifique"
+          type: "Publication scientifique",
         },
         {
           name: "Chatham House - Space Governance",
           description: "Analyse de la gouvernance spatiale internationale",
-          type: "Étude politique"
-        }
-      ]
-    }
+          type: "Étude politique",
+        },
+      ],
+    },
   };
 
   const additionalResources = [
@@ -98,8 +98,8 @@ const SourcesSection = () => {
         "Air & Cosmos (France)",
         "SpaceNews (International)",
         "Via Satellite (Europe)",
-        "Space Policy (Academic)"
-      ]
+        "Space Policy (Academic)",
+      ],
     },
     {
       category: "Bases de Données",
@@ -107,8 +107,8 @@ const SourcesSection = () => {
         "ESA Space Surveillance Catalogue",
         "UNOOSA Online Index",
         "NASA Orbital Debris Program",
-        "OECD Space Statistics"
-      ]
+        "OECD Space Statistics",
+      ],
     },
     {
       category: "Événements de Référence",
@@ -116,9 +116,9 @@ const SourcesSection = () => {
         "International Astronautical Congress",
         "European Space Conference",
         "Space Symposium (USA)",
-        "Paris Air Show - Space"
-      ]
-    }
+        "Paris Air Show - Space",
+      ],
+    },
   ];
 
   return (
@@ -129,8 +129,9 @@ const SourcesSection = () => {
             Sources et Références
           </h2>
           <p className="text-xl text-slate-300 max-w-3xl mx-auto">
-            Cette analyse s'appuie sur des sources européennes et françaises de référence, 
-            garantissant la fiabilité et la pertinence des informations présentées.
+            Cette analyse s'appuie sur des sources européennes et françaises de
+            référence, garantissant la fiabilité et la pertinence des
+            informations présentées.
           </p>
         </div>
 
@@ -146,29 +147,39 @@ const SourcesSection = () => {
                   </div>
                   {category.title}
                 </h3>
-                
+
                 <div className="grid md:grid-cols-2 gap-6">
-                  {category.items.map((item, index) => (
-                    <div key={index} className="p-6 bg-slate-800/50 backdrop-blur-sm rounded-xl border border-slate-700 hover:border-slate-500 transition-all duration-300">
-                      <div className="flex justify-between items-start mb-3">
-                        <h4 className="text-lg font-bold text-white">{item.name}</h4>
-                        {item.url && (
-                          <a
-                            href={item.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-violet-400 hover:text-violet-300 transition-colors ml-2"
-                          >
-                            <ExternalLink className="h-5 w-5" />
-                          </a>
-                        )}
+                  {category.items.map((item, index) => {
+                    // Only access item.url if it exists
+                    return (
+                      <div
+                        key={index}
+                        className="p-6 bg-slate-800/50 backdrop-blur-sm rounded-xl border border-slate-700 hover:border-slate-500 transition-all duration-300"
+                      >
+                        <div className="flex justify-between items-start mb-3">
+                          <h4 className="text-lg font-bold text-white">
+                            {item.name}
+                          </h4>
+                          {"url" in item && item.url && (
+                            <a
+                              href={item.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-violet-400 hover:text-violet-300 transition-colors ml-2"
+                            >
+                              <ExternalLink className="h-5 w-5" />
+                            </a>
+                          )}
+                        </div>
+                        <p className="text-slate-300 mb-3 leading-relaxed">
+                          {item.description}
+                        </p>
+                        <span className="inline-block px-3 py-1 bg-violet-500/20 text-violet-300 rounded-full text-xs font-medium border border-violet-500/30">
+                          {item.type}
+                        </span>
                       </div>
-                      <p className="text-slate-300 mb-3 leading-relaxed">{item.description}</p>
-                      <span className="inline-block px-3 py-1 bg-violet-500/20 text-violet-300 rounded-full text-xs font-medium border border-violet-500/30">
-                        {item.type}
-                      </span>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
             );
@@ -180,11 +191,16 @@ const SourcesSection = () => {
           <h3 className="text-2xl font-bold text-white mb-8 text-center">
             Ressources Complémentaires
           </h3>
-          
+
           <div className="grid md:grid-cols-3 gap-8">
             {additionalResources.map((resource, index) => (
-              <div key={index} className="p-6 bg-slate-800/50 backdrop-blur-sm rounded-xl border border-slate-700">
-                <h4 className="text-lg font-bold text-violet-400 mb-4">{resource.category}</h4>
+              <div
+                key={index}
+                className="p-6 bg-slate-800/50 backdrop-blur-sm rounded-xl border border-slate-700"
+              >
+                <h4 className="text-lg font-bold text-violet-400 mb-4">
+                  {resource.category}
+                </h4>
                 <ul className="space-y-2">
                   {resource.items.map((item, idx) => (
                     <li key={idx} className="flex items-start gap-2">
@@ -204,10 +220,12 @@ const SourcesSection = () => {
             <h3 className="text-2xl font-bold text-white mb-6 text-center">
               Méthodologie et Transparence
             </h3>
-            
+
             <div className="grid md:grid-cols-2 gap-8">
               <div>
-                <h4 className="text-lg font-bold text-violet-400 mb-4">Critères de Sélection</h4>
+                <h4 className="text-lg font-bold text-violet-400 mb-4">
+                  Critères de Sélection
+                </h4>
                 <ul className="space-y-2 text-slate-300">
                   <li>• Sources officielles privilégiées (ESA, CNES, OCDE)</li>
                   <li>• Données récentes (2022-2023 principalement)</li>
@@ -215,23 +233,27 @@ const SourcesSection = () => {
                   <li>• Validation croisée des informations</li>
                 </ul>
               </div>
-              
+
               <div>
-                <h4 className="text-lg font-bold text-violet-400 mb-4">Limites et Biais</h4>
+                <h4 className="text-lg font-bold text-violet-400 mb-4">
+                  Limites et Biais
+                </h4>
                 <ul className="space-y-2 text-slate-300">
-                  <li>• Données propriétaires limitées (entreprises privées)</li>
+                  <li>
+                    • Données propriétaires limitées (entreprises privées)
+                  </li>
                   <li>• Évolution rapide du secteur</li>
                   <li>• Perspective principalement occidentale</li>
                   <li>• Débats en cours sans consensus</li>
                 </ul>
               </div>
             </div>
-            
+
             <div className="mt-6 text-center">
               <p className="text-slate-400 text-sm">
-                Dernière mise à jour: Décembre 2023 • 
-                Sources vérifiées et cross-référencées • 
-                Contact pour suggestions: sources@spacedebate.eu
+                Dernière mise à jour: Décembre 2023 • Sources vérifiées et
+                cross-référencées • Contact pour suggestions:
+                sources@spacedebate.eu
               </p>
             </div>
           </div>
