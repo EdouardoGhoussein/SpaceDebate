@@ -1,124 +1,142 @@
 import { useState } from "react";
 import { Building2, TrendingUp, Users, DollarSign } from "lucide-react";
 
+// Add TabKey type for strict typing
+type TabKey = "evolution" | "acteurs" | "impacts" | "economie";
+
+const tabs = [
+  { id: "evolution", label: "Évolution", icon: TrendingUp },
+  { id: "acteurs", label: "Acteurs Privés", icon: Building2 },
+  { id: "impacts", label: "Impacts", icon: Users },
+  { id: "economie", label: "Économie", icon: DollarSign },
+];
+
+const content: Record<
+  TabKey,
+  {
+    title: string;
+    text: string;
+    data?: { year: string; event: string; impact: string }[];
+    companies?: {
+      name: string;
+      focus: string;
+      achievement: string;
+      concern: string;
+    }[];
+    impacts?: { category: string; items: string[] }[];
+    stats?: { metric: string; value: string; trend: string }[];
+  }
+> = {
+  evolution: {
+    title: "L'Évolution de la Privatisation Spatiale",
+    text: "Depuis les années 2000, nous assistons à une transformation radicale du secteur spatial. Les agences gouvernementales, longtemps seules maîtresses de l'espace, voient désormais des entreprises privées prendre une place prépondérante.",
+    data: [
+      {
+        year: "2002",
+        event: "Création de SpaceX par Elon Musk",
+        impact: "Révolution des lanceurs réutilisables",
+      },
+      {
+        year: "2004",
+        event: "Lancement du programme COTS par la NASA",
+        impact: "Ouverture aux partenariats privés",
+      },
+      {
+        year: "2020",
+        event: "Premier vol habité privé (SpaceX Crew Dragon)",
+        impact: "Fin du monopole gouvernemental",
+      },
+      {
+        year: "2023",
+        event: "Plus de 2,600 satellites Starlink en orbite",
+        impact: "Démocratisation de l'accès spatial",
+      },
+    ],
+  },
+  acteurs: {
+    title: "Les Géants de l'Espace Privé",
+    text: "Une nouvelle génération d'entreprises redéfinit les règles du jeu spatial, avec des approches innovantes mais controversées.",
+    companies: [
+      {
+        name: "SpaceX (USA)",
+        focus: "Lanceurs, satellites, exploration",
+        achievement: "Réduction des coûts de 90%",
+        concern: "Pollution lumineuse Starlink",
+      },
+      {
+        name: "Blue Origin (USA)",
+        focus: "Tourisme spatial, lanceurs",
+        achievement: "Vols suborbitaux commerciaux",
+        concern: "Impact environnemental",
+      },
+      {
+        name: "Virgin Galactic (USA)",
+        focus: "Tourisme spatial",
+        achievement: "Démocratisation de l'espace",
+        concern: "Élitisme économique",
+      },
+      {
+        name: "Arianespace (Europe)",
+        focus: "Lanceurs commerciaux",
+        achievement: "Leader européen historique",
+        concern: "Concurrence déloyale",
+      },
+    ],
+  },
+  impacts: {
+    title: "Impacts Sociétaux et Environnementaux",
+    text: "La privatisation spatiale soulève des questions fondamentales sur l'accès équitable à l'espace et la protection de l'environnement orbital.",
+    impacts: [
+      {
+        category: "Positif",
+        items: [
+          "Innovation technologique accélérée",
+          "Réduction des coûts d'accès",
+          "Création d'emplois",
+          "Démocratisation relative",
+        ],
+      },
+      {
+        category: "Négatif",
+        items: [
+          "Inégalités d'accès",
+          "Militarisation potentielle",
+          "Pollution orbitale",
+          "Dépendance technologique",
+        ],
+      },
+    ],
+  },
+  economie: {
+    title: "L'Économie Spatiale en Mutation",
+    text: "Le marché spatial connaît une croissance exponentielle, portée par les investissements privés et les nouvelles applications commerciales.",
+    stats: [
+      {
+        metric: "Investissements 2023",
+        value: "17,9 Md€",
+        trend: "+15% vs 2022",
+      },
+      {
+        metric: "Emplois secteur spatial",
+        value: "231,000",
+        trend: "En Europe",
+      },
+      {
+        metric: "Satellites lancés 2023",
+        value: "2,877",
+        trend: "+28% vs 2022",
+      },
+      {
+        metric: "Revenus commerciaux",
+        value: "95,3 Md€",
+        trend: "Monde, 2023",
+      },
+    ],
+  },
+};
+
 const PrivatizationSection = () => {
-  const [activeTab, setActiveTab] = useState("evolution");
-
-  const tabs = [
-    { id: "evolution", label: "Évolution", icon: TrendingUp },
-    { id: "acteurs", label: "Acteurs Privés", icon: Building2 },
-    { id: "impacts", label: "Impacts", icon: Users },
-    { id: "economie", label: "Économie", icon: DollarSign },
-  ];
-
-  const content = {
-    evolution: {
-      title: "L'Évolution de la Privatisation Spatiale",
-      text: "Depuis les années 2000, nous assistons à une transformation radicale du secteur spatial. Les agences gouvernementales, longtemps seules maîtresses de l'espace, voient désormais des entreprises privées prendre une place prépondérante.",
-      data: [
-        {
-          year: "2002",
-          event: "Création de SpaceX par Elon Musk",
-          impact: "Révolution des lanceurs réutilisables",
-        },
-        {
-          year: "2004",
-          event: "Lancement du programme COTS par la NASA",
-          impact: "Ouverture aux partenariats privés",
-        },
-        {
-          year: "2020",
-          event: "Premier vol habité privé (SpaceX Crew Dragon)",
-          impact: "Fin du monopole gouvernemental",
-        },
-        {
-          year: "2023",
-          event: "Plus de 2,600 satellites Starlink en orbite",
-          impact: "Démocratisation de l'accès spatial",
-        },
-      ],
-    },
-    acteurs: {
-      title: "Les Géants de l'Espace Privé",
-      text: "Une nouvelle génération d'entreprises redéfinit les règles du jeu spatial, avec des approches innovantes mais controversées.",
-      companies: [
-        {
-          name: "SpaceX (USA)",
-          focus: "Lanceurs, satellites, exploration",
-          achievement: "Réduction des coûts de 90%",
-          concern: "Pollution lumineuse Starlink",
-        },
-        {
-          name: "Blue Origin (USA)",
-          focus: "Tourisme spatial, lanceurs",
-          achievement: "Vols suborbitaux commerciaux",
-          concern: "Impact environnemental",
-        },
-        {
-          name: "Virgin Galactic (USA)",
-          focus: "Tourisme spatial",
-          achievement: "Démocratisation de l'espace",
-          concern: "Élitisme économique",
-        },
-        {
-          name: "Arianespace (Europe)",
-          focus: "Lanceurs commerciaux",
-          achievement: "Leader européen historique",
-          concern: "Concurrence déloyale",
-        },
-      ],
-    },
-    impacts: {
-      title: "Impacts Sociétaux et Environnementaux",
-      text: "La privatisation spatiale soulève des questions fondamentales sur l'accès équitable à l'espace et la protection de l'environnement orbital.",
-      impacts: [
-        {
-          category: "Positif",
-          items: [
-            "Innovation technologique accélérée",
-            "Réduction des coûts d'accès",
-            "Création d'emplois",
-            "Démocratisation relative",
-          ],
-        },
-        {
-          category: "Négatif",
-          items: [
-            "Inégalités d'accès",
-            "Militarisation potentielle",
-            "Pollution orbitale",
-            "Dépendance technologique",
-          ],
-        },
-      ],
-    },
-    economie: {
-      title: "L'Économie Spatiale en Mutation",
-      text: "Le marché spatial connaît une croissance exponentielle, portée par les investissements privés et les nouvelles applications commerciales.",
-      stats: [
-        {
-          metric: "Investissements 2023",
-          value: "17,9 Md€",
-          trend: "+15% vs 2022",
-        },
-        {
-          metric: "Emplois secteur spatial",
-          value: "231,000",
-          trend: "En Europe",
-        },
-        {
-          metric: "Satellites lancés 2023",
-          value: "2,877",
-          trend: "+28% vs 2022",
-        },
-        {
-          metric: "Revenus commerciaux",
-          value: "95,3 Md€",
-          trend: "Monde, 2023",
-        },
-      ],
-    },
-  };
+  const [activeTab, setActiveTab] = useState<TabKey>("evolution");
 
   return (
     <section id="privatisation" className="py-20 bg-slate-800">
@@ -140,7 +158,7 @@ const PrivatizationSection = () => {
             return (
               <button
                 key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
+                onClick={() => setActiveTab(tab.id as TabKey)}
                 className={`flex items-center space-x-2 px-6 py-3 rounded-lg font-semibold transition-all duration-300 ${
                   activeTab === tab.id
                     ? "bg-gradient-to-r from-violet-500 to-purple-600 text-white shadow-lg"
@@ -163,7 +181,7 @@ const PrivatizationSection = () => {
             {content[activeTab].text}
           </p>
 
-          {activeTab === "evolution" && (
+          {activeTab === "evolution" && content.evolution.data && (
             <div className="space-y-6">
               {content.evolution.data.map((item, index) => (
                 <div
@@ -184,7 +202,7 @@ const PrivatizationSection = () => {
             </div>
           )}
 
-          {activeTab === "acteurs" && (
+          {activeTab === "acteurs" && content.acteurs.companies && (
             <div className="grid md:grid-cols-2 gap-6">
               {content.acteurs.companies.map((company, index) => (
                 <div
@@ -214,7 +232,7 @@ const PrivatizationSection = () => {
             </div>
           )}
 
-          {activeTab === "impacts" && (
+          {activeTab === "impacts" && content.impacts.impacts && (
             <div className="grid md:grid-cols-2 gap-8">
               {content.impacts.impacts.map((impact, index) => (
                 <div
@@ -251,7 +269,7 @@ const PrivatizationSection = () => {
             </div>
           )}
 
-          {activeTab === "economie" && (
+          {activeTab === "economie" && content.economie.stats && (
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
               {content.economie.stats.map((stat, index) => (
                 <div
