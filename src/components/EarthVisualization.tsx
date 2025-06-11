@@ -197,7 +197,7 @@ const Satellite: React.FC<SatelliteProps> = ({
         <sphereGeometry args={[tle.size * 0.1, 8, 8]} />
         <meshBasicMaterial color={tle.color} />
       </mesh>
-      {showLabels && tle.type !== "Starlink" && (
+      {showLabels && (
         <Billboard>
           <Text
             position={[0, tle.size * 0.1, 0]}
