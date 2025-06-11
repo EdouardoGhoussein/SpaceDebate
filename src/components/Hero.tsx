@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { Rocket, AlertTriangle, Globe, Satellite } from 'lucide-react';
-import EarthVisualization from './EarthVisualization';
+import { useState } from "react";
+import { Rocket, AlertTriangle, Globe, Satellite } from "lucide-react";
+import EarthVisualization from "./EarthVisualization";
 
 const Hero = () => {
   const [showEarthViz, setShowEarthViz] = useState(false);
@@ -38,16 +38,16 @@ const Hero = () => {
             </h1>
 
             <p className="text-xl md:text-2xl text-slate-300 mb-8 max-w-4xl mx-auto leading-relaxed">
-              Une analyse critique de la privatisation spatiale et ses conséquences sur 
-              l'environnement orbital. Entre innovation technologique et débris spatiaux, 
-              où va notre avenir cosmique ?
+              Une analyse critique de la privatisation spatiale et ses
+              conséquences sur l'environnement orbital. Entre innovation
+              technologique et débris spatiaux, où va notre avenir cosmique ?
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <button className="bg-gradient-to-r from-violet-500 to-purple-600 hover:from-violet-600 hover:to-purple-700 text-white px-8 py-3 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-violet-500/25">
                 Explorer les Enjeux
               </button>
-              <button 
+              <button
                 onClick={() => setShowEarthViz(true)}
                 className="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700 text-white px-8 py-3 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-blue-500/25"
               >
@@ -61,15 +61,21 @@ const Hero = () => {
 
             <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8">
               <div className="text-center">
-                <div className="text-3xl font-bold text-violet-400 mb-2">34,000+</div>
+                <div className="text-3xl font-bold text-violet-400 mb-2">
+                  34,000+
+                </div>
                 <div className="text-slate-400">Objets suivis en orbite</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-orange-400 mb-2">130M+</div>
-                <div className="text-slate-400">Débris {'>'} 1mm</div>
+                <div className="text-3xl font-bold text-orange-400 mb-2">
+                  130M+
+                </div>
+                <div className="text-slate-400">Débris {">"} 1mm</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-blue-400 mb-2">€400Md</div>
+                <div className="text-3xl font-bold text-blue-400 mb-2">
+                  €400Md
+                </div>
                 <div className="text-slate-400">Économie spatiale 2023</div>
               </div>
             </div>
@@ -77,9 +83,9 @@ const Hero = () => {
         </div>
       </section>
 
-      <EarthVisualization 
-        isOpen={showEarthViz} 
-        onClose={() => setShowEarthViz(false)} 
+      <EarthVisualization
+        isOpen={showEarthViz}
+        onClose={() => setShowEarthViz(false)}
       />
     </>
   );

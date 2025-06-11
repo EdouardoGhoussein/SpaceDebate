@@ -131,8 +131,19 @@ const constellations = [
   },
 ];
 
+export type SatelliteTle = {
+  name: string;
+  line1: string;
+  line2: string;
+  id: string;
+  color: string;
+  size: number;
+  type: string | undefined;
+  description: string;
+};
+
 interface SatelliteProps {
-  tle: any;
+  tle: SatelliteTle;
   time: Date;
   showLabels: boolean;
   selectedType: string | null;
@@ -158,6 +169,7 @@ const Satellite: React.FC<SatelliteProps> = ({
       const positionAndVelocity = satellite.propagate(satrec, time);
 
       if (
+        positionAndVelocity &&
         positionAndVelocity.position &&
         typeof positionAndVelocity.position !== "boolean"
       ) {
@@ -199,6 +211,42 @@ const Satellite: React.FC<SatelliteProps> = ({
         </Billboard>
       )}
     </group>
+  );
+};
+
+interface InstancedSatellitesProps {
+  satellites: SatelliteTle[];
+  time: Date;
+  selectedType: string | null;
+}
+
+const InstancedSatellites: React.FC<InstancedSatellitesProps> = ({
+  satellites,
+  time,
+  selectedType,
+}) => {
+  // Group satellites by color
+  const groups = useMemo(() => {
+    const map = new Map<string, SatelliteTle[]>();
+    satellites.forEach((sat) => {
+      if (selectedType && sat.type !== selectedType) return;
+      if (!map.has(sat.color)) map.set(sat.color, []);
+      map.get(sat.color)!.push(sat);
+    });
+    return Array.from(map.entries());
+  }, [satellites, selectedType]);
+
+  return (
+    <>
+      {groups.map(([color, sats]) => (
+        <GroupedInstancedMesh
+          key={color}
+          color={color}
+          sats={sats}
+          time={time}
+        />
+      ))}
+    </>
   );
 };
 
@@ -252,8 +300,11 @@ const Scene: React.FC<{
   time: Date;
   showLabels: boolean;
   selectedType: string | null;
-  satellites: any[];
+  satellites: SatelliteTle[];
 }> = ({ time, showLabels, selectedType, satellites }) => {
+  // Only show labels for the first 10 satellites for performance
+  const satellitesWithLabels = showLabels ? satellites.slice(0, 10) : [];
+
   return (
     <>
       <ambientLight intensity={0.4} />
@@ -267,7 +318,12 @@ const Scene: React.FC<{
         fade
       />
       <Earth />
-      {satellites.map((tle) => (
+      <InstancedSatellites
+        satellites={satellites}
+        time={time}
+        selectedType={selectedType}
+      />
+      {satellitesWithLabels.map((tle) => (
         <Satellite
           key={tle.id}
           tle={tle}
@@ -284,6 +340,46 @@ const Scene: React.FC<{
         maxDistance={200}
       />
     </>
+  );
+};
+
+interface GroupedInstancedMeshProps {
+  color: string;
+  sats: SatelliteTle[];
+  time: Date;
+}
+
+const GroupedInstancedMesh: React.FC<GroupedInstancedMeshProps> = ({
+  color,
+  sats,
+  time,
+}) => {
+  const meshRef = useRef<THREE.InstancedMesh>(null);
+
+  useEffect(() => {
+    if (!meshRef.current) return;
+    sats.forEach((tle, i) => {
+      const satrec = satellite.twoline2satrec(tle.line1, tle.line2);
+      const posVel = satellite.propagate(satrec, time);
+      if (posVel && posVel.position && typeof posVel.position !== "boolean") {
+        const gmst = satellite.gstime(time);
+        const ecf = satellite.eciToEcf(posVel.position, gmst);
+        const scale = 0.001;
+        const x = ecf.x * scale;
+        const y = ecf.z * scale;
+        const z = -ecf.y * scale;
+        const matrix = new THREE.Matrix4().setPosition(x, y, z);
+        meshRef.current!.setMatrixAt(i, matrix);
+      }
+    });
+    meshRef.current!.instanceMatrix.needsUpdate = true;
+  }, [sats, time]);
+
+  return (
+    <instancedMesh ref={meshRef} args={[undefined, undefined, sats.length]}>
+      <sphereGeometry args={[0.1, 8, 8]} />
+      <meshBasicMaterial color={color} />
+    </instancedMesh>
   );
 };
 
@@ -320,7 +416,9 @@ const EarthVisualization: React.FC<EarthVisualizationProps> = ({
       const existingIds = new Set();
       for (const constellation of constellations) {
         try {
-          const response = await fetch(constellation.url);
+          const response = await fetch(
+            "https://corsproxy.io/?" + constellation.url
+          );
           const text = await response.text();
           const lines = text.split("\n");
           for (let i = 0; i < lines.length; i += 3) {
@@ -339,7 +437,6 @@ const EarthVisualization: React.FC<EarthVisualizationProps> = ({
                   tleType = constellation.typeMapper(name);
                 }
                 const legend = satelliteTypes.find((s) => s.type === tleType);
-
                 allTle.push({
                   name,
                   line1,
@@ -515,6 +612,9 @@ const EarthVisualization: React.FC<EarthVisualizationProps> = ({
                     <Icon className="h-3 w-3 text-white" />
                     <span className="text-white">{sat.type}</span>
                   </div>
+                  <span className="text-slate-300 ml-auto text-xs">
+                    {satellites.filter((s) => s.type === sat.type).length}
+                  </span>
                 </button>
               );
             })}
@@ -525,15 +625,15 @@ const EarthVisualization: React.FC<EarthVisualizationProps> = ({
           <div className="space-y-2 text-sm">
             <div className="flex justify-between">
               <span className="text-slate-300">LEO (&lt; 2000km):</span>
-              <span className="text-white font-semibold">~200</span>
+              <span className="text-white font-semibold">~90%</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-slate-300">MEO (2000-35786km):</span>
-              <span className="text-white font-semibold">~72</span>
+              <span className="text-slate-300 pr-2">MEO (2000-35786km):</span>
+              <span className="text-white font-semibold">~02%</span>
             </div>
             <div className="flex justify-between">
               <span className="text-slate-300">GEO (35786km):</span>
-              <span className="text-white font-semibold">~35</span>
+              <span className="text-white font-semibold">~08%</span>
             </div>
             <hr className="border-slate-600 my-2" />
             <div className="flex justify-between">

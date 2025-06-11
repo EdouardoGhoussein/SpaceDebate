@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
-import { Menu, X, Satellite } from 'lucide-react';
+import { useState } from "react";
+import { Menu, X, Satellite } from "lucide-react";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const navItems = [
-    { href: '#privatisation', label: 'Privatisation' },
-    { href: '#debris', label: 'Débris Spatiaux' },
-    { href: '#acteurs', label: 'Acteurs Majeurs' },
-    { href: '#controverses', label: 'Controverses' },
-    { href: '#sources', label: 'Sources' }
+    { href: "#privatisation", label: "Privatisation" },
+    { href: "#debris", label: "Débris Spatiaux" },
+    { href: "#acteurs", label: "Acteurs Majeurs" },
+    { href: "#controverses", label: "Controverses" },
+    { href: "#sources", label: "Sources" },
   ];
 
   return (
@@ -22,7 +22,9 @@ const Header = () => {
             </div>
             <div>
               <h1 className="text-xl font-bold text-white">SpaceDebate</h1>
-              <p className="text-xs text-slate-400">Enjeux Spatiaux Contemporains</p>
+              <p className="text-xs text-slate-400">
+                Enjeux Spatiaux Contemporains
+              </p>
             </div>
           </div>
 
@@ -45,7 +47,11 @@ const Header = () => {
             className="md:hidden text-slate-300 hover:text-white transition-colors"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
-            {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            {isMenuOpen ? (
+              <X className="h-6 w-6" />
+            ) : (
+              <Menu className="h-6 w-6" />
+            )}
           </button>
         </div>
 
