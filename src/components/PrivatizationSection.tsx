@@ -37,18 +37,18 @@ const content: Record<
         impact: "Révolution des lanceurs réutilisables",
       },
       {
-        year: "2004",
+        year: "2006",
         event: "Lancement du programme COTS par la NASA",
         impact: "Ouverture aux partenariats privés",
       },
       {
         year: "2020",
-        event: "Premier vol habité privé (SpaceX Crew Dragon)",
+        event: "Premier vol habité privé orbital(SpaceX Crew Dragon)",
         impact: "Fin du monopole gouvernemental",
       },
       {
-        year: "2023",
-        event: "Plus de 2,600 satellites Starlink en orbite",
+        year: "2025",
+        event: "Plus de 7,500 satellites Starlink en orbite",
         impact: "Démocratisation de l'accès spatial",
       },
     ],
