@@ -117,7 +117,7 @@ const content: Record<
         trend: "(Q1 2025)",
       },
       {
-        metric: "Emplois secteur spatial aux États-Unis",
+        metric: "Emplois secteur spatial aux États-Unis en 2023",
         value: "222,300",
         trend: "+4,8% vs 2022",
       },
