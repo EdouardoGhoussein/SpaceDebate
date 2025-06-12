@@ -6,9 +6,172 @@ type TabKey = "evolution" | "acteurs" | "impacts" | "economie";
 
 const tabs = [
   { id: "evolution", label: "Évolution", icon: TrendingUp },
-  { id: "acteurs", label: "Acteurs Privés", icon: Building2 },
+  { id: "acteurs", label: "Acteurs", icon: Building2 },
   { id: "impacts", label: "Impacts", icon: Users },
   { id: "economie", label: "Économie", icon: DollarSign },
+];
+
+const macroActors: {
+  name: string;
+  contexte: string[];
+  enjeux: string[];
+  arguments: { type: "pour" | "contre"; text: string }[];
+}[] = [
+  {
+    name: "Entreprises privées",
+    contexte: [
+      "Dominent aujourd'hui le secteur spatial en orbite basse (LEO).",
+      "SpaceX (Starlink): +6 000 satellites lancés depuis 2019, objectif 42 000.",
+      "OneWeb (648 satellites), Amazon Kuiper (3 236 satellites).",
+      "SpaceX a réduit les coûts de lancement à ~2 500 $/kg.",
+    ],
+    enjeux: [
+      "Marché spatial mondial: 570 Mds $ en 2023 (+7,4%).",
+      "SpaceX vise 30 Mds $/an avec Starlink.",
+      "2,7 milliards de personnes sans Internet.",
+      "Investissements dans miniaturisation, liaisons laser, systèmes autonomes.",
+    ],
+    arguments: [
+      {
+        type: "pour",
+        text: "Démocratisation de l'accès à Internet dans les zones isolées.",
+      },
+      {
+        type: "pour",
+        text: "Création de plus de 373 000 emplois directs dans le spatial privé américain.",
+      },
+      {
+        type: "pour",
+        text: "Accélération de l'innovation technologique et réduction des coûts.",
+      },
+      {
+        type: "contre",
+        text: "Pollution orbitale croissante: +36 500 objets >10 cm en orbite.",
+      },
+      {
+        type: "contre",
+        text: "Nuisances astronomiques: jusqu'à 30% des observations perturbées.",
+      },
+      {
+        type: "contre",
+        text: "Absence de cadre international contraignant pour l'accès équitable aux orbites.",
+      },
+    ],
+  },
+  {
+    name: "Agences publiques et gouvernements",
+    contexte: [
+      "Historiquement leaders de la recherche spatiale.",
+      "Adoptent des partenariats public-privé (ex : Commercial Crew NASA).",
+      "Régulation nationale (FCC, CNES, Ofcom), coordination globale limitée.",
+    ],
+    enjeux: [
+      "Préservation des missions d’intérêt général : climat, météo, astrophysique.",
+      "Sécurité orbitale : manœuvres d’évitement face aux constellations privées.",
+      "Gouvernance internationale (ONU, IRIS² européen).",
+    ],
+    arguments: [
+      {
+        type: "pour",
+        text: "Réduction des coûts (20 à 30 %) grâce aux partenariats public-privé.",
+      },
+      { type: "pour", text: "Accès accéléré à l’innovation technologique." },
+      {
+        type: "pour",
+        text: "Capacité de régulation environnementale et protection des services essentiels.",
+      },
+      {
+        type: "contre",
+        text: "Risque de dépendance stratégique et perte d’autonomie technologique.",
+      },
+      {
+        type: "contre",
+        text: "Faiblesse des normes contraignantes et conflits d’intérêts.",
+      },
+      {
+        type: "contre",
+        text: "Dilution des exigences scientifiques (transparence, qualité, durabilité).",
+      },
+    ],
+  },
+  {
+    name: "Scientifiques et astronomes",
+    contexte: [
+      "Dépendent de cieux clairs et d’un environnement radio silencieux.",
+      "30 % des observations optiques perturbées par les satellites.",
+      "Pollution radio détectée par les radiotélescopes.",
+      "Débris spatiaux en hausse.",
+    ],
+    enjeux: [
+      "Préservation de la qualité des observations scientifiques.",
+      "Prévention d’un effet Kessler (cascade de collisions).",
+      "Coopération technique avec les industriels (satellites moins brillants).",
+    ],
+    arguments: [
+      {
+        type: "pour",
+        text: "Défense de la recherche fondamentale et de la connaissance scientifique.",
+      },
+      {
+        type: "pour",
+        text: "Améliorations concrètes issues du dialogue (réduction de la réflectivité, algorithmes de correction).",
+      },
+      {
+        type: "pour",
+        text: "Élaboration de normes internationales via le COSPAR et l’UAI.",
+      },
+      {
+        type: "contre",
+        text: "Croissance exponentielle des constellations (+3 000 satellites Starlink en 2023).",
+      },
+      {
+        type: "contre",
+        text: "Absence de cadre contraignant et coordination internationale limitée.",
+      },
+      {
+        type: "contre",
+        text: "Coût élevé des solutions techniques (optique adaptative, nettoyage orbital, désorbitation active).",
+      },
+    ],
+  },
+  {
+    name: "Grand public et médias",
+    contexte: [
+      "Sensibilisation par médias spécialisés et ONG.",
+      "Secteur spatial : 570 Mds $ en 2023 (+7,4 %).",
+    ],
+    enjeux: [
+      "Éducation aux bénéfices et impacts du spatial.",
+      "Engagement citoyen et consultations publiques.",
+      "Transparence et fiabilité de l'information.",
+    ],
+    arguments: [
+      {
+        type: "pour",
+        text: "Mobilisation citoyenne comme levier de régulation internationale.",
+      },
+      {
+        type: "pour",
+        text: "Rôle pédagogique des médias pour vulgariser les enjeux.",
+      },
+      {
+        type: "pour",
+        text: "Pression publique utile pour plus de responsabilité des acteurs.",
+      },
+      {
+        type: "contre",
+        text: "Complexité technique difficile à vulgariser sans déformation.",
+      },
+      {
+        type: "contre",
+        text: "Risque de sensationnalisme (peur exagérée de la “fin du ciel étoilé”).",
+      },
+      {
+        type: "contre",
+        text: "Attention publique souvent limitée à des événements spectaculaires.",
+      },
+    ],
+  },
 ];
 
 const content: Record<
@@ -137,6 +300,7 @@ const content: Record<
 
 const PrivatizationSection = () => {
   const [activeTab, setActiveTab] = useState<TabKey>("evolution");
+  const [showArguments, setShowArguments] = useState(false);
 
   return (
     <section id="privatisation" className="py-20 bg-slate-800">
@@ -202,34 +366,94 @@ const PrivatizationSection = () => {
             </div>
           )}
 
-          {activeTab === "acteurs" && content.acteurs.companies && (
-            <div className="grid md:grid-cols-2 gap-6">
-              {content.acteurs.companies.map((company, index) => (
-                <div
-                  key={index}
-                  className="p-6 bg-slate-800 rounded-lg border border-slate-600"
+          {activeTab === "acteurs" && (
+            <>
+              <div className="flex justify-end mb-6">
+                <button
+                  className="px-5 py-2 rounded-lg font-semibold transition bg-violet-600 text-white hover:bg-violet-700"
+                  onClick={() => setShowArguments((v) => !v)}
                 >
-                  <h4 className="text-violet-400 font-bold text-lg mb-2">
-                    {company.name}
-                  </h4>
-                  <p className="text-slate-300 mb-3">{company.focus}</p>
-                  <div className="space-y-2">
-                    <div className="flex items-start gap-2">
-                      <span className="text-green-400 text-sm">✓</span>
-                      <span className="text-slate-400 text-sm">
-                        {company.achievement}
-                      </span>
-                    </div>
-                    <div className="flex items-start gap-2">
-                      <span className="text-orange-400 text-sm">⚠</span>
-                      <span className="text-slate-400 text-sm">
-                        {company.concern}
-                      </span>
-                    </div>
+                  {showArguments ? "Voir contexte & enjeux" : "Voir arguments"}
+                </button>
+              </div>
+              <div className="grid md:grid-cols-2 gap-8">
+                {macroActors.map((actor, idx) => (
+                  <div
+                    key={idx}
+                    className="p-6 bg-slate-800 rounded-xl border border-slate-600 shadow-lg flex flex-col"
+                  >
+                    <h4 className="text-violet-400 font-bold text-xl mb-4">
+                      {actor.name}
+                    </h4>
+                    {!showArguments ? (
+                      <>
+                        <div className="mb-3">
+                          <span className="font-semibold text-slate-300">
+                            Contexte :
+                          </span>
+                          <ul className="list-disc ml-6 text-slate-400 text-sm space-y-1">
+                            {actor.contexte.map((c, i) => (
+                              <li key={i}>{c}</li>
+                            ))}
+                          </ul>
+                        </div>
+                        <div>
+                          <span className="font-semibold text-slate-300">
+                            Enjeux :
+                          </span>
+                          <ul className="list-disc ml-6 text-slate-400 text-sm space-y-1">
+                            {actor.enjeux.map((e, i) => (
+                              <li key={i}>{e}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      </>
+                    ) : (
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                          <h5 className="font-bold text-green-400 mb-2">
+                            Arguments POUR
+                          </h5>
+                          <ul className="space-y-2">
+                            {actor.arguments
+                              .filter((a) => a.type === "pour")
+                              .map((a, i) => (
+                                <li key={i} className="flex items-start gap-2">
+                                  <span className="text-green-400 text-lg">
+                                    ✓
+                                  </span>
+                                  <span className="text-slate-300 text-sm">
+                                    {a.text}
+                                  </span>
+                                </li>
+                              ))}
+                          </ul>
+                        </div>
+                        <div>
+                          <h5 className="font-bold text-red-400 mb-2">
+                            Arguments CONTRE
+                          </h5>
+                          <ul className="space-y-2">
+                            {actor.arguments
+                              .filter((a) => a.type === "contre")
+                              .map((a, i) => (
+                                <li key={i} className="flex items-start gap-2">
+                                  <span className="text-red-400 text-lg">
+                                    ✗
+                                  </span>
+                                  <span className="text-slate-300 text-sm">
+                                    {a.text}
+                                  </span>
+                                </li>
+                              ))}
+                          </ul>
+                        </div>
+                      </div>
+                    )}
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            </>
           )}
 
           {activeTab === "impacts" && content.impacts.impacts && (
