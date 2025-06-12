@@ -8,56 +8,81 @@ const DebrisSection = () => {
     {
       id: 'functional',
       name: 'Satellites Actifs',
-      count: '8,800',
+      count: '14750',
       color: 'bg-green-500',
-      description: 'Satellites opérationnels en orbite'
+      description: 'Satellites opérationnels en orbite',
+      link: 'https://obdh.space/'
     },
     {
       id: 'defunct',
       name: 'Satellites Morts',
-      count: '5,500',
+      count: '3,600',
       color: 'bg-orange-500',
-      description: 'Satellites non-opérationnels mais intacts'
-    },
+      description: 'Satellites non-opérationnels mais intacts',
+      link: 'https://www.slingshot.space/news/state-of-satellite-deployments-and-orbital-operations-2023'
+    },  
     {
       id: 'fragments',
       name: 'Fragments',
-      count: '29,000',
+      count: '54,000',
       color: 'bg-red-500',
-      description: 'Débris de collisions et explosions'
+      description: 'Débris de collisions et explosions',
+      link: 'https://sdup.esoc.esa.int/discosweb/statistics/'
     },
     {
       id: 'micro',
       name: 'Micro-débris',
-      count: '130M+',
+      count: '140M+',
       color: 'bg-purple-500',
-      description: 'Particules < 10cm, non-suivies mais dangereuses'
+      description: 'Particules < 10cm, non-suivies mais dangereuses',
+      link: 'https://sdup.esoc.esa.int/discosweb/statistics/'
     }
   ];
+const threats = [
+    {
+        title: "Syndrome de Kessler",
+        description: (
+            <>
+                Une réaction en chaîne de collisions entre débris spatiaux pourrait rendre l'orbite basse inutilisable, avec une augmentation documentée des risques d'accidents dus à la densité croissante de satellites et de débris.{" "}
+                <a href="https://www.tandfonline.com/doi/epdf/10.1080/10095020.2022.2031313?needAccess=true" target="_blank" rel="noopener noreferrer">
+                    En savoir plus
+                </a>
+            </>
+        ),
+        probability: "Modérée",
+        impact: "Catastrophique",
+        icon: Zap
+    },
+    {
+        title: "Collision avec l'ISS",
+        description: (
+            <>
+                Les collisions potentielles avec l'ISS représentent un risque permanent pour la sécurité des astronautes et l'intégrité des installations spatiales. Des études montrent que les régulations actuelles ne suffisent pas à réduire ce danger de manière significative.{" "}
+                <a href="https://issues.org/space-debris-fcc-harbert-balakrishnan/#:~:text=regulatory%20framework%20in%20space,In" target="_blank" rel="noopener noreferrer">
+                    En savoir plus
+                </a>
+            </>
+        ),
+        probability: "Faible",
+        impact: "Majeur",
+        icon: AlertCircle
+    },
+    {
+        title: "Perte de satellites critiques",
+        description: (
+            <>
+                Des collisions comme celle impliquant Yunhai 1-02 montrent que la perte de satellites critiques perturbe les télécommunications, le GPS et la surveillance météo, avec des implications croissantes pour les infrastructures terrestres.{" "}
+                <a href="https://www.space.com/space-junk-collision-chinese-satellite-yunhai-1-02" target="_blank" rel="noopener noreferrer">
+                    En savoir plus
+                </a>
+            </>
+        ),
+        probability: "Élevée",
+        impact: "Significatif",
+        icon: Shield
+    }
+];
 
-  const threats = [
-    {
-      title: "Syndrome de Kessler",
-      description: "Réaction en chaîne de collisions qui pourrait rendre l'orbite basse inutilisable",
-      probability: "Modérée",
-      impact: "Catastrophique",
-      icon: Zap
-    },
-    {
-      title: "Collision avec l'ISS",
-      description: "Risque permanent pour les astronautes et les installations spatiales",
-      probability: "Faible",
-      impact: "Majeur",
-      icon: AlertCircle
-    },
-    {
-      title: "Perte de satellites critiques",
-      description: "Disruption des télécommunications, GPS et surveillance météo",
-      probability: "Élevée",
-      impact: "Significatif",
-      icon: Shield
-    }
-  ];
 
   const solutions = [
     {
