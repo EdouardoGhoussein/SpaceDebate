@@ -38,9 +38,11 @@ const Hero = () => {
             </h1>
 
             <p className="text-xl md:text-2xl text-slate-300 mb-8 max-w-4xl mx-auto leading-relaxed">
-              Une analyse critique de la privatisation spatiale et ses
-              conséquences sur l'environnement orbital. Entre innovation
-              technologique et débris spatiaux, où va notre avenir cosmique ?
+              L’exploitation spatiale devrait-elle rester public et
+              international, ou faut-il accepter une privatisation croissante au
+              détriment de la régulation globale et des enjeux environnementaux
+              et surtout malgré les risques de surabondance des satellites en
+              orbite basse ?
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">

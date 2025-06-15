@@ -100,7 +100,7 @@ const constellations = [
   {
     name: "CubeSat",
     url: "https://celestrak.org/NORAD/elements/gp.php?GROUP=cubesat&FORMAT=tle",
-    color: "#00ffff",
+    color: "#e26c34",
     size: 0.2,
     type: "CubeSat",
     description: "CubeSat Constellation",
@@ -250,48 +250,83 @@ const InstancedSatellites: React.FC<InstancedSatellitesProps> = ({
   );
 };
 
-const Earth: React.FC = () => {
+// Update Earth props to accept timeSpeed
+const Earth: React.FC<{ timeSpeed: number }> = ({ timeSpeed }) => {
   const earthRef = useRef<THREE.Mesh>(null);
+  const [earthTexture, setEarthTexture] = useState<THREE.Texture | null>(null);
+  const [_, setTextureError] = useState(false);
 
-  const earthTexture = useMemo(() => {
-    const canvas = document.createElement("canvas");
-    canvas.width = 1024;
-    canvas.height = 512;
-    const ctx = canvas.getContext("2d")!;
+  useEffect(() => {
+    const loader = new THREE.TextureLoader();
+    loader.setCrossOrigin("anonymous");
 
-    const gradient = ctx.createRadialGradient(512, 256, 0, 512, 256, 400);
-    gradient.addColorStop(0, "#4A90E2");
-    gradient.addColorStop(0.6, "#2E5BBA");
-    gradient.addColorStop(1, "#1A365D");
+    const url = import.meta.env.BASE_URL + "/1_earth_8k.jpg";
+    loader.load(
+      url,
+      (tex) => {
+        (tex as any).encoding = (THREE as any).sRGBEncoding;
+        tex.flipY = true;
+        tex.wrapS = THREE.RepeatWrapping;
+        tex.wrapT = THREE.RepeatWrapping;
+        tex.minFilter = THREE.LinearFilter;
+        tex.magFilter = THREE.LinearFilter;
+        tex.needsUpdate = true;
+        setEarthTexture(tex);
+        setTextureError(false);
 
-    ctx.fillStyle = gradient;
-    ctx.fillRect(0, 0, 1024, 512);
-
-    ctx.fillStyle = "#228B22";
-    ctx.fillRect(480, 200, 80, 120);
-    ctx.fillRect(500, 150, 40, 50);
-    ctx.fillRect(600, 120, 120, 100);
-    ctx.fillRect(200, 180, 60, 150);
-    ctx.fillRect(150, 100, 40, 80);
-    ctx.fillRect(750, 280, 50, 30);
-
-    ctx.fillStyle = "#FFFFFF";
-    ctx.fillRect(0, 0, 1024, 30);
-    ctx.fillRect(0, 482, 1024, 30);
-
-    return new THREE.CanvasTexture(canvas);
+        console.log(
+          "Earth texture loaded:",
+          tex.image.width,
+          "×",
+          tex.image.height
+        );
+      },
+      (xhr) => {
+        // optional: track progress
+        console.log(`Loading: ${Math.round((xhr.loaded / xhr.total) * 100)}%`);
+      },
+      (errEvent) => {
+        setTextureError(true);
+        setEarthTexture(null);
+        console.error("Earth texture failed to load", errEvent);
+      }
+    );
   }, []);
 
-  useFrame(() => {
+  // Earth's sidereal day in seconds
+  // const EARTH_ROTATION_PERIOD = 86164; // seconds
+  // const ROTATION_PER_SEC = (2 * Math.PI) / EARTH_ROTATION_PERIOD;
+
+  useFrame((_, delta) => {
     if (earthRef.current) {
-      earthRef.current.rotation.y += 0.001;
+      earthRef.current.rotation.y +=
+        ((2 * Math.PI) / 86164) * delta * timeSpeed;
     }
   });
 
   return (
     <mesh ref={earthRef}>
       <sphereGeometry args={[6.371, 64, 32]} />
-      <meshLambertMaterial map={earthTexture} />
+      {earthTexture ? (
+        // Option 1: Use meshStandardMaterial (responds to lighting)
+        <meshStandardMaterial
+          map={earthTexture}
+          transparent={false}
+          // Adjust these values to control how the Earth looks with lighting
+          roughness={0.8}
+          metalness={0.1}
+        />
+      ) : (
+        // Option 2: Use emissive meshBasicMaterial (glows in the dark)
+        // <meshBasicMaterial
+        //   map={earthTexture}
+        //   transparent={false}
+        //   emissive="#222222"  // Add some glow
+        //   emissiveMap={earthTexture}
+        //   emissiveIntensity={0.3}
+        // />
+        <meshBasicMaterial color="hotpink" />
+      )}
     </mesh>
   );
 };
@@ -301,13 +336,15 @@ const Scene: React.FC<{
   showLabels: boolean;
   selectedType: string | null;
   satellites: SatelliteTle[];
-}> = ({ time, showLabels, selectedType, satellites }) => {
+  timeSpeed: number;
+}> = ({ time, showLabels, selectedType, satellites, timeSpeed }) => {
   // Only show labels for the first 10 satellites for performance
   const satellitesWithLabels = showLabels ? satellites.slice(0, 10) : [];
 
   return (
     <>
-      <ambientLight intensity={0.4} />
+      <ambientLight intensity={1.0} />
+      <directionalLight position={[50, 50, 50]} intensity={2.5} castShadow />
       <pointLight position={[100, 100, 100]} intensity={1.2} />
       <Stars
         radius={500}
@@ -317,7 +354,7 @@ const Scene: React.FC<{
         saturation={0}
         fade
       />
-      <Earth />
+      <Earth timeSpeed={timeSpeed} />
       <InstancedSatellites
         satellites={satellites}
         time={time}
@@ -396,7 +433,7 @@ const EarthVisualization: React.FC<EarthVisualizationProps> = ({
   const [isPlaying, setIsPlaying] = useState(true);
   const [showLabels, setShowLabels] = useState(false);
   const [selectedType, setSelectedType] = useState<string | null>(null);
-  const [timeSpeed, setTimeSpeed] = useState(0.1);
+  const [timeSpeed, setTimeSpeed] = useState(5);
   type SatelliteTle = {
     name: string;
     line1: string;
@@ -467,7 +504,10 @@ const EarthVisualization: React.FC<EarthVisualizationProps> = ({
   useEffect(() => {
     if (!isPlaying) return;
     const interval = setInterval(() => {
-      setCurrentTime((prev) => new Date(prev.getTime() + 60000 * timeSpeed));
+      setCurrentTime((prev) => {
+        // Advance by real elapsed time * speed
+        return new Date(prev.getTime() + timeSpeed * 100);
+      });
     }, 100);
     return () => clearInterval(interval);
   }, [isPlaying, timeSpeed]);
@@ -487,7 +527,7 @@ const EarthVisualization: React.FC<EarthVisualizationProps> = ({
     { type: "Sentinel", color: "#a29bfe", icon: SatelliteIcon },
     { type: "Science", color: "#fdcb6e", icon: SatelliteIcon },
     { type: "Amateur", color: "#ff00ff", icon: SatelliteIcon },
-    { type: "CubeSat", color: "#00ffff", icon: SatelliteIcon },
+    { type: "CubeSat", color: "#e26c34", icon: SatelliteIcon },
     { type: "Iridium", color: "#ff0000", icon: SatelliteIcon },
     { type: "Weather", color: "#00ff00", icon: SatelliteIcon },
     { type: "NOAA", color: "#ffff00", icon: SatelliteIcon },
@@ -540,12 +580,15 @@ const EarthVisualization: React.FC<EarthVisualizationProps> = ({
             onChange={(e) => setTimeSpeed(Number(e.target.value))}
             className="bg-slate-700 text-white px-3 py-1 rounded border border-slate-600"
           >
-            <option value={0.1}>0.1x</option>
             <option value={1}>1x</option>
             <option value={5}>5x</option>
             <option value={10}>10x</option>
-            <option value={30}>30x</option>
-            <option value={60}>60x</option>
+            <option value={50}>50x</option>
+            <option value={100}>100x</option>
+            <option value={500}>500x</option>
+            <option value={1000}>1 000x</option>
+            <option value={5000}>5 000x</option>
+            <option value={10000}>10 000x</option>
           </select>
         </div>
         <label className="flex items-center gap-2 text-white">
@@ -581,6 +624,7 @@ const EarthVisualization: React.FC<EarthVisualizationProps> = ({
               showLabels={showLabels}
               selectedType={selectedType}
               satellites={satellites}
+              timeSpeed={timeSpeed}
             />
           </Canvas>
         )}
