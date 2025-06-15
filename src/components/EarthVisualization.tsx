@@ -19,7 +19,7 @@ const constellations = [
   {
     name: "ISS",
     url: "https://celestrak.org/NORAD/elements/gp.php?GROUP=stations&FORMAT=tle",
-    filter: (name: string | string[]) => name.includes("ISS"),
+    filter: (name: string | string[]) => name.includes("ISS (ZARYA)"),
     color: "#00ff00",
     size: 1.2,
     type: "ISS",
@@ -338,8 +338,8 @@ const Scene: React.FC<{
   satellites: SatelliteTle[];
   timeSpeed: number;
 }> = ({ time, showLabels, selectedType, satellites, timeSpeed }) => {
-  // Only show labels for the first 10 satellites for performance
-  const satellitesWithLabels = showLabels ? satellites.slice(0, 10) : [];
+  // Show labels for all satellites if showLabels is true
+  const satellitesWithLabels = showLabels ? satellites : [];
 
   return (
     <>
