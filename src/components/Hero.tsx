@@ -44,7 +44,14 @@ const Hero = () => {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <button className="bg-gradient-to-r from-violet-500 to-purple-600 hover:from-violet-600 hover:to-purple-700 text-white px-8 py-3 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-violet-500/25">
+              <button
+                onClick={() =>
+                  document
+                    .getElementById("privatisation")
+                    ?.scrollIntoView({ behavior: "smooth" })
+                }
+                className="bg-gradient-to-r from-violet-500 to-purple-600 hover:from-violet-600 hover:to-purple-700 text-white px-8 py-3 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-violet-500/25"
+              >
                 Explorer les Enjeux
               </button>
               <button
@@ -54,7 +61,14 @@ const Hero = () => {
                 <Satellite className="h-5 w-5" />
                 Visualisation 3D
               </button>
-              <button className="border-2 border-slate-400 text-slate-300 hover:border-white hover:text-white px-8 py-3 rounded-lg font-semibold transition-all duration-300">
+              <button
+                onClick={() =>
+                  document
+                    .getElementById("sources")
+                    ?.scrollIntoView({ behavior: "smooth" })
+                }
+                className="border-2 border-slate-400 text-slate-300 hover:border-white hover:text-white px-8 py-3 rounded-lg font-semibold transition-all duration-300"
+              >
                 Voir les Sources
               </button>
             </div>

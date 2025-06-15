@@ -28,7 +28,7 @@ const SourcesSection = () => {
         {
           name: "OCDE - Économie Spatiale",
           description: "Analyses économiques et statistiques sectorielles",
-          url: "https://www.oecd.org/space",
+          url: "https://www.oecd.org/fr/themes/economie-de-l-espace.html",
           type: "Organisation économique",
         },
       ],
@@ -46,7 +46,7 @@ const SourcesSection = () => {
         {
           name: "Centre Spatial Universitaire de Montpellier",
           description: "Recherches académiques françaises sur l'espace",
-          url: "https://www.csum.fr",
+          url: "https://csum.umontpellier.fr/en/home/",
           type: "Université",
         },
         {
@@ -253,7 +253,7 @@ const SourcesSection = () => {
               <p className="text-slate-400 text-sm">
                 Dernière mise à jour: Décembre 2023 • Sources vérifiées et
                 cross-référencées • Contact pour suggestions:
-                sources@spacedebate.eu
+                EdouardoGhossein26@gmail.com
               </p>
             </div>
           </div>

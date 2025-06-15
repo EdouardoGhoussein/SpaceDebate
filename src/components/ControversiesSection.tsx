@@ -239,7 +239,7 @@ const ControversiesSection = () => {
         </div>
 
         {/* Call to Action */}
-        <div className="mt-16 text-center">
+        {/* <div className="mt-16 text-center">
           <div className="p-8 bg-gradient-to-r from-violet-500/10 to-purple-600/10 rounded-2xl border border-violet-500/30">
             <h3 className="text-2xl font-bold text-white mb-4">
               Vers un Débat Citoyen
@@ -257,7 +257,7 @@ const ControversiesSection = () => {
               </button>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
     </section>
   );

@@ -1,4 +1,4 @@
-import { Satellite, Mail, ExternalLink, Github } from "lucide-react";
+import { Satellite, Mail, ExternalLink, GithubIcon } from "lucide-react";
 
 const Footer = () => {
   return (
@@ -53,9 +53,21 @@ const Footer = () => {
             <div className="space-y-2">
               {[
                 { name: "Sources Officielles", href: "#sources" },
-                { name: "Rapports ESA", external: true },
-                { name: "Données CNES", external: true },
-                { name: "Analyses OCDE", external: true },
+                {
+                  name: "Rapports ESA",
+                  external: true,
+                  href: "https://www.esa.int/About_Us/ESA_s_Annual_Report",
+                },
+                {
+                  name: "Données CNES",
+                  external: true,
+                  href: "https://geodes.cnes.fr/",
+                },
+                {
+                  name: "Analyses OCDE",
+                  external: true,
+                  href: "https://www.oecd.org/",
+                },
               ].map((item, index) => (
                 <a
                   key={index}
@@ -74,30 +86,19 @@ const Footer = () => {
             <h4 className="text-white font-semibold mb-4">Contact</h4>
             <div className="space-y-3">
               <a
-                href="mailto:contact@spacedebate.eu"
+                href="mailto:EdouardoGhossein26@gmail.com"
                 className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors text-sm"
               >
                 <Mail className="h-4 w-4" />
-                contact@spacedebate.eu
+                EdouardoGhossein26@gmail.com
               </a>
               <a
-                href="#"
+                href="https://github.com/EdouardoGhoussein/SpaceDebate"
                 className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors text-sm"
               >
-                <Github className="h-4 w-4" />
+                <GithubIcon className="h-4 w-4" />
                 Contribuer au projet
               </a>
-            </div>
-
-            <div className="mt-6">
-              <h5 className="text-white font-medium mb-2 text-sm">
-                Partenaires
-              </h5>
-              <div className="space-y-1 text-xs text-slate-500">
-                <p>Observatoire de l'Espace</p>
-                <p>Institut Français de Géopolitique</p>
-                <p>Centre d'Études Stratégiques</p>
-              </div>
             </div>
           </div>
         </div>
@@ -106,29 +107,9 @@ const Footer = () => {
         <div className="border-t border-slate-700 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="text-slate-400 text-sm">
-              © 2023 SpaceDebate. Projet éducatif et informatif sur les enjeux
+              © 2025 SpaceDebate. Projet éducatif et informatif sur les enjeux
               spatiaux contemporains.
             </div>
-
-            <div className="flex flex-wrap gap-6 text-xs text-slate-500">
-              <a href="#" className="hover:text-slate-300 transition-colors">
-                Mentions Légales
-              </a>
-              <a href="#" className="hover:text-slate-300 transition-colors">
-                Politique de Confidentialité
-              </a>
-              <a href="#" className="hover:text-slate-300 transition-colors">
-                Accessibilité
-              </a>
-            </div>
-          </div>
-
-          <div className="mt-4 text-center">
-            <p className="text-xs text-slate-500">
-              Développé avec React, TypeScript et Tailwind CSS • Sources
-              vérifiées et mises à jour régulièrement • Hébergé de manière
-              éco-responsable
-            </p>
           </div>
         </div>
       </div>
